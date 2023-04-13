@@ -1,0 +1,83 @@
+# IBM Service Authorization module
+
+Module to create an authorization policy that will allow one service to access another.
+
+
+## Software dependencies
+
+The module depends on the following software components:
+
+### Terraform version
+
+- \>= v0.15
+
+### Terraform providers
+
+
+- ibm (ibm-cloud/ibm)
+
+### Module dependencies
+
+
+- source_resource - interface github.com/cloud-native-toolkit/automation-modules#ibm-service
+- source_resource_group - [github.com/cloud-native-toolkit/terraform-ibm-resource-group](https://github.com/cloud-native-toolkit/terraform-ibm-resource-group) ()
+- target_resource - interface github.com/cloud-native-toolkit/automation-modules#ibm-service
+- target_resource_group - [github.com/cloud-native-toolkit/terraform-ibm-resource-group](https://github.com/cloud-native-toolkit/terraform-ibm-resource-group) ()
+
+## Example usage
+
+```hcl
+module "vsi-encrypt-auth" {
+  source = "github.com/terraform-ibm-modules/terraform-ibm-toolkit-iam-service-authorization"
+
+  ibmcloud_api_key = var.ibmcloud_api_key
+  provision = var.vsi-encrypt-auth_provision
+  roles = var.vsi-encrypt-auth_roles == null ? null : jsondecode(var.vsi-encrypt-auth_roles)
+  source_instance = var.vsi-encrypt-auth_source_instance
+  source_resource_group_id = var.vsi-encrypt-auth_source_resource_group_id
+  source_resource_instance_id = var.vsi-encrypt-auth_source_resource_instance_id
+  source_resource_type = var.vsi-encrypt-auth_source_resource_type
+  source_service_account = var.vsi-encrypt-auth_source_service_account
+  source_service_name = var.vsi-encrypt-auth_source_service_name
+  target_instance = var.vsi-encrypt-auth_target_instance
+  target_resource_group_id = module.kms_resource_group.id
+  target_resource_instance_id = module.kms.id
+  target_resource_type = module.kms.type
+  target_service_name = module.kms.service
+}
+
+```
+
+## Module details
+
+### Inputs
+
+| Name | Description | Required | Default | Source |
+|------|-------------|---------|----------|--------|
+| ibmcloud_api_key | The IBM Cloud api key | true |  |  |
+| source_service_name | The name of the service that will be authorized to access the target service. This value is the name of the service as it appears in the service catalog. | true |  | source_resource.service |
+| target_service_name | The name of the service to which the source service will be authorization to access. This value is the name of the service as it appears in the service catalog. | true |  | target_resource.service |
+| roles | A list of roles that should be granted on the target service (e.g. Reader, Writer). | false | Reader |  |
+| source_resource_instance_id | The instance id of the source service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account. | false | null | source_resource.id |
+| target_resource_instance_id | The instance id of the target service. This value is required if the authorization will be scoped to a specific service instance. If not provided the authorization will be scoped to the resource group or the account. | false | null | target_resource.id |
+| source_resource_group_id | The id of the resource group that will be used to scope which source services will be authorized to access the target service. If not provided the authorization will be scoped to the entire account. This value is superseded by the source_resource_instance_id | false | null | source_resource_group.id |
+| target_resource_group_id | The id of the resource group that will be used to scope which services the source services will be authorized to access. If not provided the authorization will be scoped to the entire account. This value is superseded by the target_resource_instance_id | false | null | target_resource_group.id |
+| source_resource_type | The resource type of the source service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector). | false | null | source_resource.type |
+| target_resource_type | The resource type of the target service. This value is used to define sub-types of services in the service catalog (e.g. flow-log-collector). | false | null | target_resource.type |
+| source_service_account | GUID of the account where the source service is provisioned. This is required to authorize service access across accounts. | false | null |  |
+| provision | Flag indicating that the service authorization should be created | false | true |  |
+| source_instance | Flag indicating that the source instance id should be mapped | true |  |  |
+| target_instance | Flag indicating that the target instance id should be mapped | true |  |  |
+
+### Outputs
+
+| Name | Description |
+|------|-------------|
+| id | The ID of the authorization policy ID |
+
+## Resources
+
+- [Documentation](https://operate.cloudnativetoolkit.dev)
+- [Module catalog](https://modules.cloudnativetoolkit.dev)
+
+> License: Apache License 2.0 | Generated by iascable (0.1.5)

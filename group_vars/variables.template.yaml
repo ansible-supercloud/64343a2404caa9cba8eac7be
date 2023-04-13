@@ -1,0 +1,88 @@
+variables:
+  - name: config_banner_text
+    type: string
+    description: The text that will appear in the top banner in the cluster
+  - name: cs_resource_group_name
+    type: string
+    description: The name of the resource group
+  - name: gitops_repo_repo
+    type: string
+    description: The short name of the repository (i.e. the part after the org/group name)
+  - name: ibmcloud_api_key
+    type: string
+    description: The api key for IBM Cloud access
+  - name: kms_region
+    type: string
+    description: Geographic location of the resource (e.g. us-south, us-east)
+  - name: kms_resource_group_name
+    type: string
+    description: The name of the resource group
+  - name: region
+    type: string
+    description: The IBM Cloud region.
+  - name: vpc_resource_group_name
+    type: string
+    description: The name of the resource group
+  - name: cluster_flavor
+    type: string
+    description: The machine type that will be provisioned for classic infrastructure
+    value: bx2.16x64
+  - name: common_tags
+    type: list(string)
+    description: Common tags that should be added to the instance
+    value: []
+  - name: egress-subnets__count
+    type: number
+    description: The number of subnets that should be provisioned
+    value: 3
+  - name: gitops_repo_host
+    type: string
+    description: >-
+      The host for the git repository. The git host used can be a GitHub, GitHub
+      Enterprise, Gitlab, Bitbucket, Gitea or Azure DevOps server. If the host
+      is null assumes in-cluster Gitea instance will be used.
+    value: ''
+  - name: gitops_repo_org
+    type: string
+    description: >-
+      The org/group where the git repository exists/will be provisioned. If the
+      value is left blank then the username org will be used.
+    value: ''
+  - name: gitops_repo_project
+    type: string
+    description: >-
+      The project that will be used for the git repo. (Primarily used for Azure
+      DevOps repos)
+    value: ''
+  - name: gitops_repo_username
+    type: string
+    description: The username of the user with access to the repository
+    value: ''
+  - name: ingress-subnets__count
+    type: number
+    description: The number of subnets that should be provisioned
+    value: 3
+  - name: kms_service
+    type: string
+    description: The name of the KMS provider that should be used (keyprotect or hpcs)
+    value: keyprotect
+  - name: vpc_name_prefix
+    type: string
+    description: >-
+      The name_prefix used to build the name if one is not provided. If used the
+      name will be `{name_prefix}-{label}`
+    value: base
+  - name: vpe-subnets__count
+    type: number
+    description: The number of subnets that should be provisioned
+    value: 3
+  - name: worker_count
+    type: number
+    description: >-
+      The number of worker nodes that should be provisioned for classic
+      infrastructure
+    value: 1
+  - name: worker_subnet_count
+    type: number
+    description: The number of subnets that should be provisioned
+    value: 3
